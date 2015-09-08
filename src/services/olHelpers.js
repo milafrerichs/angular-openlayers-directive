@@ -680,9 +680,8 @@ angular.module('openlayers-directive').factory('olHelpers', function($q, $log, $
         setVectorLayerEvents: function(events, map, scope, layerName) {
             if (isDefined(events) && angular.isArray(events.layers)) {
                 angular.forEach(events.layers, function(eventType) {
-                    angular.element(map.getViewport()).on(eventType, function(evt) {
-                        var pixel = map.getEventPixel(evt);
-                        var feature = map.forEachFeatureAtPixel(pixel, function(feature, olLayer) {
+                    map.on(eventType, function(evt) {
+                        var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, olLayer) {
                             // only return the feature if it is in this layer (based on the name)
                             return (isDefinedAndNotNull(olLayer) && olLayer.get('name') === layerName) ? feature : null;
                         });
